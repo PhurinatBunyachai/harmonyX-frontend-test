@@ -135,6 +135,7 @@ export default function Home() {
         <div className="mb-6">
           <h2 className="text-center font-bold text-gray-800 mb-4">TODO TASKS</h2>
           <div className="space-y-3">
+          {loading && <p className='text-black text-center text-2xl'>Loading...</p>}
             {todoTasks.map(task => (
               <TodoCard
                 key={task.id}
@@ -152,6 +153,7 @@ export default function Home() {
         <div>
           <h2 className="text-center font-bold text-gray-800 mb-4">DONE TASKS</h2>
           <div className="space-y-3">
+            {loading && <p className='text-black text-center text-2xl'>Loading...</p>}
             {doneTasks.map(task => (
               <TodoCard
                 key={task.id}
