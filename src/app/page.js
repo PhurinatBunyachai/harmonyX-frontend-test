@@ -1,8 +1,8 @@
 'use client';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import TaskModal from './components/TaskModal';
-import { API_URL } from './config/config';
+import useFetchTodos from './hooks/useFetchTodos';
 
 export default function Home() {
   const currentDate = new Date();
@@ -13,59 +13,14 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
-  const [todos, setTodos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Use the custom hook for fetching tasks
+  const { todos, loading, error, fetchTodos, setTodos } = useFetchTodos({userId:1});
   
-  // Fetch todos from GraphQL API
+  // Fetch todos when component mounts
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const query = `
-         query GetUserTodos {
-            mydbTodos(where:{userId :{_eq:1}}){
-              id
-              title
-              subTitle
-              status
-            }
-          }
-        `;
-        
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-hasura-user-id' : '1'
-          },
-          body: JSON.stringify({ query })
-        });
-        
-        const result = await response.json();
-        
-        if (result.errors) {
-          throw new Error(result.errors[0].message);
-        }
-        
-        // If API returns no todos, use sample data
-        if (result.data && result.data.mydbTodos && result.data.mydbTodos.length > 0) {
-          setTodos(result.data.mydbTodos);
-        } else {
-          // Fallback to sample data if API returns empty
-          setTodos([]);
-        }
-      } catch (err) {
-        console.error('Error fetching todos:', err);
-        setError('Failed to load todos. Please try again later.');
-        // Fallback to empty array
-        setTodos([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchTasks();
+    fetchTodos();
   }, []);
+
 
   const todoTasks = todos.filter(task => !(task.status === 'done'));
   const doneTasks = todos.filter(task => task.status === 'done');
