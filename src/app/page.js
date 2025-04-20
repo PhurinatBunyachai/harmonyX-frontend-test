@@ -13,11 +13,11 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
-  const [tasks, setTasks] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Fetch tasks from GraphQL API
+  // Fetch todos from GraphQL API
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -36,7 +36,7 @@ export default function Home() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-hasura-ddn-token' : 'eyJhbGciOiJFZERTQSIsImtpZCI6IjlkX2JMaEVGbWpSelMwanpxajlOSk15Vmt4TUpDZGpJeVkweFZxMFpWNlEiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhYTk0MDQ5OC1mNzZjLTQ0ODItYTYxMS0zOTMyNGM5ZDRlNWEiLCJleHAiOjE3NDUxNDU5NTIsImlhdCI6MTc0NTE0MjM1MiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnByby5oYXN1cmEuaW8vZGRuL3Rva2VuIiwic3ViIjoiMzEzYWIwMTktMGRkNS00MWNmLTgzY2MtYjJlYTdjYzk0OTAzIn0.nqUKF4Wck7D72DTjkEBtvKbNMPFlL1ynJd-L56bblL72bYwzMMY57uW1QuQe9VNqG9inLxl4zLDb15Raf-PBCA'
+            'x-hasura-user-id' : '1'
           },
           body: JSON.stringify({ query })
         });
@@ -47,18 +47,18 @@ export default function Home() {
           throw new Error(result.errors[0].message);
         }
         
-        // If API returns no tasks, use sample data
+        // If API returns no todos, use sample data
         if (result.data && result.data.mydbTodos && result.data.mydbTodos.length > 0) {
-          setTasks(result.data.mydbTodos);
+          setTodos(result.data.mydbTodos);
         } else {
           // Fallback to sample data if API returns empty
-          setTasks([]);
+          setTodos([]);
         }
       } catch (err) {
-        console.error('Error fetching tasks:', err);
-        setError('Failed to load tasks. Please try again later.');
+        console.error('Error fetching todos:', err);
+        setError('Failed to load todos. Please try again later.');
         // Fallback to empty array
-        setTasks([]);
+        setTodos([]);
       } finally {
         setLoading(false);
       }
@@ -67,11 +67,11 @@ export default function Home() {
     fetchTasks();
   }, []);
 
-  const todoTasks = tasks.filter(task => !(task.status === 'done'));
-  const doneTasks = tasks.filter(task => task.status === 'done');
+  const todoTasks = todos.filter(task => !(task.status === 'done'));
+  const doneTasks = todos.filter(task => task.status === 'done');
 
   const toggleTaskStatus = (id) => {
-    setTasks(tasks.map(task => {
+    setTodos(todos.map(task => {
       if (task.id === id) {
         return {
           ...task,
@@ -83,7 +83,7 @@ export default function Home() {
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
+    setTodos(todos.filter(task => task.id !== id));
   };
 
   const editTask = (task) => {
@@ -94,7 +94,7 @@ export default function Home() {
   const handleSaveTask = (formData) => {
     if (currentTask) {
       // Edit existing task
-      setTasks(tasks.map(task => {
+      setTodos(todos.map(task => {
         if (task.id === currentTask.id) {
           return {
             ...task,
@@ -106,11 +106,11 @@ export default function Home() {
     } else {
       // Add new task
       const newTask = {
-        id: tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1,
+        id: todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1,
         ...formData,
         status: 'todo'
       };
-      setTasks([...tasks, newTask]);
+      setTodos([...todos, newTask]);
     }
   };
 
