@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-sm py-3 px-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="font-bold text-xl text-purple-600">TaskManager</Link>
+        <Link href="/" className="font-bold text-xl text-purple-600">Todosssss</Link>
         
         <div className="flex space-x-4">
           <Link 
