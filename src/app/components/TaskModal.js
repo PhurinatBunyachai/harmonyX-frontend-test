@@ -58,7 +58,7 @@ export default function TaskModal({ isOpen, onClose, task, onSave }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-red-100 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-red-100 bg-opacity-95 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button 
           onClick={onClose}
@@ -76,40 +76,40 @@ export default function TaskModal({ isOpen, onClose, task, onSave }) {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-black mb-1">Title</label>
             <input
               type="text"
               id="title"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600`}
+              className={`w-full px-3 py-2 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black`}
               placeholder="Task title"
             />
             {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
           </div>
           
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label htmlFor="description" className="block text-sm font-medium text-black mb-1">Description</label>
             <textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows="3"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black"
               placeholder="Task description"
             ></textarea>
           </div>
           
           <div className="mb-6">
-            <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+            <label htmlFor="priority" className="block text-sm font-medium text-black mb-1">Priority</label>
             <select
               id="priority"
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black"
             >
               <option value="normal">Normal</option>
               <option value="high">High</option>

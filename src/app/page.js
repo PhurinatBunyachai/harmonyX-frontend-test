@@ -147,10 +147,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="border-t border-gray-200 mb-4"></div>
 
-        {/* Done Tasks Section */}
         <div>
           <h2 className="text-center font-bold text-gray-800 mb-4">DONE TASKS</h2>
           <div className="space-y-3">
