@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import useAuth from '../hooks/useAuth';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -9,9 +11,16 @@ export default function Register() {
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [registerError, setRegisterError] = useState('');
+  const { register, loading: isLoading, error } = useAuth();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (error) {
+      setRegisterError(error);
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,16 +71,15 @@ export default function Register() {
     setRegisterSuccess(false);
     
     if (validateForm()) {
-      setIsLoading(true);
+      const userData = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      };
       
-      // Simulate API call
-      try {
-        // In a real app, this would be an API call to your registration endpoint
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // For demo purposes, let's simulate a successful registration
-        console.log('Registration successful', formData);
-        
+      const result = await register(userData);
+      
+      if (result.success) {
         // Show success message
         setRegisterSuccess(true);
         
@@ -82,13 +90,10 @@ export default function Register() {
           confirmPassword: ''
         });
         
-        // In a real app, you might redirect to login page after a delay
-        // or automatically log the user in
-      } catch (error) {
-        console.error('Registration failed', error);
-        setRegisterError('Registration failed. Please try again.');
-      } finally {
-        setIsLoading(false);
+        // Redirect to login page after a delay
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000);
       }
     }
   };

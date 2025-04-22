@@ -118,10 +118,9 @@ export default function Home() {
               <div className="text-xs text-gray-500">{month} {year}</div>
             </div>
           </div>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 cursor-pointer' onClick={openNewTaskModal}>
           <button 
-            onClick={openNewTaskModal}
-            className="flex items-center cursor-pointer justify-center bg-purple-600 hover:bg-purple-700 text-white rounded-full h-8 px-3 text-xs font-medium shadow-md transition-colors"
+            className="flex items-center  justify-center bg-purple-600 hover:bg-purple-700 text-white rounded-full h-8 px-3 text-xs font-medium shadow-md transition-colors"
           >
             <span className="font-bold">+</span> 
           </button>

@@ -1,15 +1,24 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import useAuth from '../hooks/useAuth';
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const { login, loading: isLoading, error } = useAuth();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (error) {
+      setLoginError(error);
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,8 +39,10 @@ export default function Login() {
     const newErrors = {};
     
     // Email validation
-    if (!formData.username) {
-      newErrors.username = 'Username is required';
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
     }
     
     // Password validation
@@ -50,24 +61,11 @@ export default function Login() {
     setLoginError('');
     
     if (validateForm()) {
-      setIsLoading(true);
+      const result = await login(formData);
       
-      // Simulate API call
-      try {
-        // In a real app, this would be an API call to your authentication endpoint
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // For demo purposes, let's simulate a successful login
-        // In a real app, you would handle the response from your API
-        console.log('Login successful', formData);
-        
+      if (result.success) {
         // Redirect to home page after successful login
-        window.location.href = '/';
-      } catch (error) {
-        console.error('Login failed', error);
-        setLoginError('Invalid username or password. Please try again.');
-      } finally {
-        setIsLoading(false);
+        router.push('/');
       }
     }
   };
@@ -85,17 +83,17 @@ export default function Login() {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-black mb-1">Username</label>
+            <label htmlFor="email" className="block text-sm font-medium text-black mb-1">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border ${errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black`}
-              placeholder="yourusername"
+              className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black`}
+              placeholder="your@email.com"
             />
-            {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username}</p>}
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
           </div>
           
           <div className="mb-6">
