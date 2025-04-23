@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
@@ -39,10 +39,8 @@ export default function Login() {
     const newErrors = {};
     
     // Email validation
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    if (!formData.username) {
+      newErrors.username = 'Email is required';
     }
     
     // Password validation
@@ -83,17 +81,17 @@ export default function Login() {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-black mb-1">Email</label>
+            <label htmlFor="username" className="block text-sm font-medium text-black mb-1">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="username"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black`}
-              placeholder="your@email.com"
+              className={`w-full px-3 py-2 border ${errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black`}
+              placeholder="username"
             />
-            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+            {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username}</p>}
           </div>
           
           <div className="mb-6">

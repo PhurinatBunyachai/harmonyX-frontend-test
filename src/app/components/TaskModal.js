@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 export default function TaskModal({ isOpen, onClose, task, onSave }) {
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
+    subTitle: '',
     priority: 'normal'
   });
   const [errors, setErrors] = useState({});
@@ -13,7 +13,7 @@ export default function TaskModal({ isOpen, onClose, task, onSave }) {
     if (task) {
       setFormData({
         title: task.title || '',
-        description: task.description || '',
+        subTitle: task.subTitle || '',
         priority: task.priority || 'normal'
       });
     }
@@ -90,15 +90,15 @@ export default function TaskModal({ isOpen, onClose, task, onSave }) {
           </div>
           
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium text-black mb-1">Description</label>
+            <label htmlFor="subTitle" className="block text-sm font-medium text-black mb-1">Description</label>
             <textarea
-              id="description"
-              name="description"
-              value={formData.description}
+              id="subTitle"
+              name="subTitle"
+              value={formData.subTitle}
               onChange={handleChange}
               rows="3"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-black"
-              placeholder="Task description"
+              placeholder="Task subTitle"
             ></textarea>
           </div>
           
